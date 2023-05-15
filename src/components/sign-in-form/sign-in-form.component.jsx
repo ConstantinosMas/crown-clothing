@@ -1,5 +1,5 @@
-import { signInWithGooglePopup, signInWithGoogleRedirect, createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword,auth } from "../../utils/firebase/firebase.utils";
-import { useEffect, useState } from "react";
+import { signInWithGooglePopup, signInWithGoogleRedirect, signInAuthUserWithEmailAndPassword,auth } from "../../utils/firebase/firebase.utils";
+import { useEffect, useState} from "react";
 import { getRedirectResult } from "firebase/auth";
 import FormInput from "../form-input/form-input.component";
 import Button from "../../components/button/button.component";
@@ -14,9 +14,6 @@ const SignInForm = () => {
     useEffect(() => {
         const getResultFromRedirect = async () => {
             const response = await getRedirectResult(auth);
-            if (response) {
-                const userDocRef = await createUserDocumentFromAuth(response.user);
-            }
         }
 
         getResultFromRedirect();        
@@ -36,9 +33,8 @@ const SignInForm = () => {
         event.preventDefault();
 
         try {
-            const result = await signInAuthUserWithEmailAndPassword(email, password);
-            if (result) {
-                const userDocRef = await createUserDocumentFromAuth(result);
+            const user = await signInAuthUserWithEmailAndPassword(email, password);
+            if (user) {
                 resetFormFields();
             }
 

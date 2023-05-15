@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -9,7 +9,7 @@ const firebaseConfig = {
     storageBucket: "crown-clothing-db-b408b.appspot.com",
     messagingSenderId: "103847428015",
     appId: "1:103847428015:web:ceb11dfbe57c5ed020795a"
-  };
+};
   
 
 const app = initializeApp(firebaseConfig);
@@ -64,3 +64,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
     const response = await signInWithEmailAndPassword(auth, email, password);
     return response.user;
 }
+
+export const SignOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);

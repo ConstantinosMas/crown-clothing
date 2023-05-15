@@ -1,6 +1,12 @@
 * {
     font-size: 30px;
 }
+
+body {
+    padding:20px;
+}
+
+
 .authentication-container {
     display: flex;
     justify-content: space-between;
@@ -10,6 +16,7 @@
     @media (max-width: 800px) {
         & {
             flex-direction: column;
+            width: 100%;
         }
     }
 }
