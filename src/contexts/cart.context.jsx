@@ -1,8 +1,18 @@
 import { createContext, useState, useEffect } from "react";
 
-const addCartItem = (cartItems, productToAdd) => {
+const modifyCartItems = (cartItems, productToAdd, increaseOrDecrease) => {
     const existingCartItem = cartItems.find((cartItem) => {return cartItem.id == productToAdd.id});
     if (existingCartItem) {
+        if (increaseOrDecrease == 'decrease') {
+            if (productToAdd.quantity == 1) {
+                return cartItems.filter((item) => {return item.quantity !== 1});
+            }
+
+            return cartItems.map((cartItem) => {
+                return cartItem.id == productToAdd.id ? {...cartItem, quantity: cartItem.quantity - 1} : cartItem
+            });
+        }
+
         return cartItems.map((cartItem) => {
             return cartItem.id == productToAdd.id ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
         });
@@ -10,6 +20,10 @@ const addCartItem = (cartItems, productToAdd) => {
 
     return [...cartItems, {...productToAdd, quantity: 1}];
 }
+
+const removeCartItem = (cartItems, productToDelete) => {
+    return cartItems.filter((item) => {return item.id !== productToDelete.id});
+};
 
 export const CartContext = createContext({
     iscartDropdownOpen: 'false',
@@ -19,7 +33,8 @@ export const CartContext = createContext({
     cartCount: 0,
     totalPrice: 0,
     makeCartIconPulsate: false,
-    setMakeCartIconPulsate: () => {}
+    setMakeCartIconPulsate: () => {},
+    deleteCartItem: () => {}
 })
 
 export const CartProvider = ({children}) => {
@@ -42,11 +57,15 @@ export const CartProvider = ({children}) => {
     }, [makeCartIconPulsate]);
 
 
-    const addItemToCart = (productToAdd) => {
-        setCartItems(addCartItem(cartItems, productToAdd));
+    const modifyCart = (productToAdd, increaseOrDecrease = 'increase') => {
+        setCartItems(modifyCartItems(cartItems, productToAdd, increaseOrDecrease));
     }
 
-    const value = {iscartDropdownOpen, setiscartDropdownOpen, addItemToCart, cartItems, totalPrice, cartCount, makeCartIconPulsate, setMakeCartIconPulsate};
+    const deleteCartItem = (productToDelete) => {
+        setCartItems(removeCartItem(cartItems, productToDelete));
+    }
+
+    const value = {iscartDropdownOpen, setiscartDropdownOpen, modifyCart, deleteCartItem, cartItems, setCartItems, totalPrice, cartCount, makeCartIconPulsate, setMakeCartIconPulsate};
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

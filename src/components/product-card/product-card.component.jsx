@@ -7,10 +7,10 @@ import './product-card.styles.scss';
 const ProductCard = ({product}) => {
 
     const {name, imageUrl, price} = product;
-    const {addItemToCart, setMakeCartIconPulsate} = useContext(CartContext);
+    const {modifyCart, setMakeCartIconPulsate} = useContext(CartContext);
 
     const addToCartHandler = () => {
-        addItemToCart(product);
+        modifyCart(product);
         window.scrollTo({
             top: 0,
             behavior: "smooth"
