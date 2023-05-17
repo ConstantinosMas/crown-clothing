@@ -34,6 +34,45 @@
       font-weight: bold;
       bottom: 12px;
       transition: 0.2s;
+
+    }
+  }
+
+  .pulsate {
+    animation: pulse 0.7s ;
+  }
+
+  @keyframes pulse {
+    12% {
+      transform: scale(1.2);
+    }
+
+    24% {
+      transform: scale(1.4);
+    }
+
+    36% {
+      transform: scale(1.6);
+    }
+
+    48% {
+      transform: scale(1.8);
+    }
+  
+    60% {
+      transform: scale(1.6);
+    }
+  
+    72% {
+      transform: scale(1.4);
+    }
+
+    84% {
+      transform: scale(1.2);
+    }
+
+    100% {
+      transform: scale(1);
     }
   }
   
