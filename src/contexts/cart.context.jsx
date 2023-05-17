@@ -1,25 +1,31 @@
 import { createContext, useState, useEffect } from "react";
 
-const modifyCartItems = (cartItems, productToAdd, increaseOrDecrease) => {
-    const existingCartItem = cartItems.find((cartItem) => {return cartItem.id == productToAdd.id});
+
+const modifyCartItems = (cartItems, productToModify, increaseOrDecrease) => {
+    const existingCartItem = cartItems.find((cartItem) => {return cartItem.id == productToModify.id});
     if (existingCartItem) {
         if (increaseOrDecrease == 'decrease') {
+            if (productToModify.quantity == 1) {
+               return removeCartItem(cartItems, productToModify);
+            }
+
             return cartItems.map((cartItem) => {
-                return cartItem.id == productToAdd.id ? {...cartItem, quantity: cartItem.quantity - 1} : cartItem
+                return cartItem.id == productToModify.id ? {...cartItem, quantity: cartItem.quantity - 1} : cartItem
             });
         }
 
         return cartItems.map((cartItem) => {
-            return cartItem.id == productToAdd.id ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
+            return cartItem.id == productToModify.id ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem
         });
     }
 
-    return [...cartItems, {...productToAdd, quantity: 1}];
+    return [...cartItems, {...productToModify, quantity: 1}];
 }
 
 const removeCartItem = (cartItems, productToDelete) => {
     return cartItems.filter((item) => {return item.id !== productToDelete.id});
 };
+
 
 export const CartContext = createContext({
     iscartDropdownOpen: 'false',

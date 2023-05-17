@@ -27,7 +27,11 @@
   
       .arrow {
         cursor: pointer;
-        font-weight: bolder;
+        transition: 0.1s;
+
+        &:hover {
+          font-size: 32px;
+        }
       }
   
       .value {
@@ -38,6 +42,12 @@
     .remove-button {
       padding-left: 12px;
       cursor: pointer;
+      transition: 0.1s;
+
+      &:hover {
+        font-size: 40px;
+        transition: 0.1s;
+      }
     }
   }
   
