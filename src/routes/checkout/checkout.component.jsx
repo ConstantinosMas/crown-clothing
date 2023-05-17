@@ -19,6 +19,7 @@ const Checkout = () => {
             {cartItems.map((item) => {
                 return (<CheckoutItem key={item.id} product={item}/>)
             })}
+            { cartItems.length == 0 && <span className='empty-cart'>No items in your cart</span> }
         </div>
     )
 

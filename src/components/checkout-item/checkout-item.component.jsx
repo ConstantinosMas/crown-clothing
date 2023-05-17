@@ -26,9 +26,10 @@ const CheckoutItem = ({product}) => {
             </div>
             <span className="name">{name}</span>
             <span className="quantity">
-                <span onClick={decreaseItemCount} className='arrow'>{`<`}</span>
+                { product.quantity > 1 && <span onClick={decreaseItemCount} className='arrow value'>{`< `}</span>}
                 {quantity} 
-                <span onClick={increaseItemCount} className='arrow'>{`>`}</span></span>
+                <span onClick={increaseItemCount} className='arrow value'>{` >`}</span>
+            </span>
             <span className="price">{price * quantity}</span>
             <span onClick={removeItemFromCart} className="remove-button">X</span>
         </div>

@@ -16,10 +16,12 @@ const CartDropdown = () => {
                 {
                     totalPrice > 0 && <span className='total'>Total: ${totalPrice}</span>
                 }
+                { cartItems.length == 0 && <span className='empty-message'>Your cart is empty</span> }
             </div>
-            <Link to='/checkout'> <Button buttonTitle='GO TO CHECKOUT' /> </Link>
+            { cartItems.length > 0 && <Link to='/checkout'> <Button buttonTitle='GO TO CHECKOUT' /> </Link> }
         </div>
     )
 }
+
 
 export default CartDropdown;

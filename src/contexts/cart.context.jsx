@@ -4,10 +4,6 @@ const modifyCartItems = (cartItems, productToAdd, increaseOrDecrease) => {
     const existingCartItem = cartItems.find((cartItem) => {return cartItem.id == productToAdd.id});
     if (existingCartItem) {
         if (increaseOrDecrease == 'decrease') {
-            if (productToAdd.quantity == 1) {
-                return cartItems.filter((item) => {return item.quantity !== 1});
-            }
-
             return cartItems.map((cartItem) => {
                 return cartItem.id == productToAdd.id ? {...cartItem, quantity: cartItem.quantity - 1} : cartItem
             });
