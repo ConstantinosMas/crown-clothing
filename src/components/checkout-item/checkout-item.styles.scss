@@ -27,11 +27,6 @@
   
       .arrow {
         cursor: pointer;
-        transition: 0.1s;
-
-        &:hover {
-          font-size: 32px;
-        }
       }
   
       .value {

@@ -49,6 +49,9 @@ export const CartProvider = ({children}) => {
 
     useEffect(() => {
         setCartCount(cartItems.reduce((total, currentItem) => {return total + currentItem.quantity}, 0));
+    }, [cartItems]);
+
+    useEffect(() => {
         setTotalPrice(cartItems.reduce((total, currentItem) => {return total + currentItem.price * currentItem.quantity}, 0));
     }, [cartItems]);
 
