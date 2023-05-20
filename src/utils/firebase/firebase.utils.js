@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs, updateDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyB_TFXgQ2y9TNVTlMGcdX4oujv5iBO2wik",
@@ -37,6 +37,36 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
     await batch.commit();
 };
 
+export const saveCartToAuthUser = async (userAuth, userCart) => {
+    if (!userAuth) { return; }
+
+    const userDocRef = doc(db, 'users', userAuth.uid);
+    const userSnapshot = await getDoc(userDocRef);
+
+    if (userSnapshot.exists()) {
+        try {
+            await updateDoc(userDocRef, {
+                'userCart': userCart
+            });
+        } catch(error) {
+            console.log(`The following error occured while saving the cart to the user account: ${error.message}`)
+        }
+    }
+};
+
+export const getAuthUserCart = async (userAuth) => {
+    const userDocRef = doc(db, 'users', userAuth.uid);
+    const userSnapshot = await getDoc(userDocRef);
+
+    if (userSnapshot.exists()) {
+        try {
+            return userSnapshot.data().userCart;
+        } catch(error) {
+            console.log(`The following error occured while getting cart data: ${error.message}`)
+        }
+    }
+};
+
 export const getCategoriesAndDocuments = async() => {
     const collectionRef = collection(db, 'categories');
     const q = query(collectionRef);
@@ -67,6 +97,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
                 email,
                 createdAt,
                 ...additionalInfo,
+                userCart: [],
             });
         } catch(error) {
             console.log(`The following error occured while creating the user: ${error.message}`)

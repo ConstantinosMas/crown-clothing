@@ -4,11 +4,20 @@
     display: flex;
     justify-content: space-between;
     margin: 0 auto 100px auto;
+
+    @media (max-width: 300px) {
+        justify-content: space-around;
+      }
   
     .logo-container {
       height: 100%;
       width: 70px;
       padding: 25px;
+
+      @media (max-width: 300px) {
+        padding-right:140px;
+      }
+
     }
   
     .nav-links-container {
@@ -17,15 +26,15 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      padding-top: 30px;
 
       @media (max-width:800px) {
         & {
-          justify-content: flex-start;
+          justify-content: flex-end;
         }
       }
   
       .nav-link {
-        padding: 10px 15px;
         cursor: pointer;
         font-size: 20px;
         transition: 0.2s;
@@ -40,4 +49,129 @@
 
   .active {
     text-decoration: underline 2px solid #ededed;
+  }
+
+  .website-footer {
+    position: relative;
+    margin: 200px auto 0 auto;
+    max-width: fit-content;
+
+    span {
+      font-style: italic;
+      color: #cecece;
+      font-size:16px;
+    }
+
+
+    @media (max-width: 960px) {
+
+    }
+
+  }
+  
+
+  
+  .menu {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .menu > li {
+    margin: 0 1rem;
+    overflow: hidden;
+  }
+  
+  .menu-button-container {
+    display: none;
+    height: 100%;
+    width: 30px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #menu-toggle {
+    display: none;
+  }
+  
+  .menu-button,
+  .menu-button::before,
+  .menu-button::after {
+    display: block;
+    background-color: #000000;
+    position: absolute;
+    height: 4px;
+    width: 30px;
+    transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 2px;
+  }
+  
+  .menu-button::before {
+    content: '';
+    margin-top: -8px;
+  }
+  
+  .menu-button::after {
+    content: '';
+    margin-top: 8px;
+  }
+  
+  #menu-toggle:checked + .menu-button-container .menu-button::before {
+    margin-top: 0px;
+    transform: rotate(405deg);
+  }
+  
+  #menu-toggle:checked + .menu-button-container .menu-button {
+    background: rgba(255, 255, 255, 0);
+  }
+  
+  #menu-toggle:checked + .menu-button-container .menu-button::after {
+    margin-top: 0px;
+    transform: rotate(-405deg);
+  }
+  
+  @media (max-width: 960px) {
+    .menu-button-container {
+      display: flex;
+    }
+    .menu {
+      position: absolute;
+      top: 0;
+      margin-top: 85px;
+      left: 0;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      z-index: 15;
+    }
+    #menu-toggle ~ .menu li {
+      height: 0;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    #menu-toggle:checked ~ .menu li {
+      border: 1px solid #333;
+      height: 2.5em;
+      padding: 30px 40px 50px 40px;
+      transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .menu > li {
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      padding: 0.5em 0;
+      width: 100%;
+      color: rgb(0, 0, 0);
+      background-color: #ffffff;
+    }
+    .menu > li:not(:last-child) {
+      border-bottom: 1px solid #444;
+    }
   }

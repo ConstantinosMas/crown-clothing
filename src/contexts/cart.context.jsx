@@ -1,4 +1,7 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
+import { saveCartToAuthUser, getAuthUserCart } from "../utils/firebase/firebase.utils";
+import { UserContext } from "./user.context";
+
 
 
 const modifyCartItems = (cartItems, productToModify, increaseOrDecrease) => {
@@ -40,6 +43,7 @@ export const CartContext = createContext({
 })
 
 export const CartProvider = ({children}) => {
+    const {currentUser} = useContext(UserContext);
    
     const [iscartDropdownOpen, setiscartDropdownOpen] = useState(false);
     const [cartItems, setCartItems] = useState([]);
@@ -61,9 +65,25 @@ export const CartProvider = ({children}) => {
         }, 800);
     }, [makeCartIconPulsate]);
 
+    useEffect(() => {  
+        saveCartToAuthUser(currentUser, cartItems);    
+    }, [cartItems]);
+
+    useEffect(() => {
+        if (currentUser) {
+            const getCartFromFirestore = async () => {
+                const savedCart = await getAuthUserCart(currentUser);
+                if (savedCart.length > 0) {
+                    setCartItems(await savedCart);
+                }
+            };
+            getCartFromFirestore();  
+        }     
+    }, [currentUser]);
+
 
     const modifyCart = (productToAdd, increaseOrDecrease = 'increase') => {
-        setCartItems(modifyCartItems(cartItems, productToAdd, increaseOrDecrease));
+        setCartItems(modifyCartItems(cartItems, productToAdd, increaseOrDecrease));       
     }
 
     const deleteCartItem = (productToDelete) => {

@@ -1,17 +1,13 @@
-* {
-    font-size: 30px;
-}
-
 body {
     padding:20px;
 }
-
 
 .authentication-container {
     display: flex;
     justify-content: space-between;
     width: 900px;
     margin: 30px auto;
+    font-size: 30px;
 
     @media (max-width: 800px) {
         & {

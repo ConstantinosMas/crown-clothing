@@ -22,20 +22,36 @@ const Navigation = () => {
                 <CrownLogo className='logo' />
             </Link>         
             <div className='nav-links-container'>
-                <Link className='nav-link' to='/shop'>
-                    <span className={currentRoute == '/shop' ? 'nav-link active' : 'nav-link'}>SHOP</span>
-                </Link>
-                {
-                    currentUser ? (<span className='nav-link' onClick={SignOutUser}>SIGN OUT</span>) : 
-                    (<Link className='nav-link' to='/auth'> 
-                    <span className={currentRoute == '/auth' ? 'nav-link active' : 'nav-link'}>SIGN IN</span> 
-                    </Link>)
-                }
+                <input id="menu-toggle" type="checkbox" />
+                    <label className='menu-button-container' htmlFor="menu-toggle">
+                    <div className='menu-button'></div>
+                </label>
+                <ul className="menu">
+                    <li><Link className='nav-link' to='/'>
+                            <span className={currentRoute == '/' ? 'nav-link active' : 'nav-link'}>HOME</span>
+                        </Link>
+                    </li>
+                    <li><Link className='nav-link' to='/shop'>
+                            <span className={currentRoute == '/shop' ? 'nav-link active' : 'nav-link'}>SHOP</span>
+                        </Link>
+                    </li>
+                    <li>{
+                        currentUser ? (<span className='nav-link' onClick={SignOutUser}>SIGN OUT</span>) : 
+                        (<Link className='nav-link' to='/auth'> 
+                        <span className={currentRoute == '/auth' ? 'nav-link active' : 'nav-link'}>SIGN IN</span> 
+                        </Link>)
+                        }
+                    </li>
+                </ul>
                 <CartIcon makeIconPulsate={true}/>
             </div>
             {iscartDropdownOpen && <CartDropdown />} 
         </div>
         <Outlet/>
+
+        <div className='website-footer'>
+            <span>@2023 Constantinos Mastrapas</span>
+        </div>
       </Fragment> 
       )
   }
