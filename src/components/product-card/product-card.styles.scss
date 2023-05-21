@@ -2,7 +2,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    height: 350px;
+    height: 400px;
     align-items: center;
     position: relative;
     margin-bottom: 50px;
@@ -19,11 +19,36 @@
       width: 80%;
       opacity: 0.7;
       position: absolute;
-      top: 255px;
+      top: 300px;
       display: none;
+    }
+
+    .favorite {
+      position: absolute;
+      width: 100%;
+      opacity: 1;
+      z-index: 15;
+
+      .fav-button {
+        display: none;
+        float: right;
+        padding: 10px;
+        cursor: pointer;
+        max-width: fit-content;
+        transition: 0.2s;
+
+        &:hover {
+          margin: -5px -5px 0 0;
+          font-size: 40px;
+          transition: 0.2s;
+        }
+      }
     }
   
     &:hover {
+      .fav-button {
+        display: flex;
+      }
       img {
         opacity: 0.8;
       }
@@ -60,4 +85,8 @@
       }
     }
   }
+
+.hidden {
+  display: none;
+}
   

@@ -1,6 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { CartContext } from '../../contexts/cart.context';
+import { UserContext } from '../../contexts/user.context';
+import { favoriteButtonHandler } from '../../utils/firebase/firebase.utils';
 import Button from '../button/button.component';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import './product-card.styles.scss';
 
 
@@ -8,6 +12,22 @@ const ProductCard = ({product}) => {
 
     const {name, imageUrl, price} = product;
     const {modifyCart, setMakeCartIconPulsate} = useContext(CartContext);
+    const {currentUser, userFavorites} = useContext(UserContext);
+    const [isFav, setIsFav] = useState(false);
+
+    
+    useEffect(() => {
+        if (userFavorites) {
+            const productIsFav = userFavorites.find((item) => {return item.id == product.id});
+            productIsFav && setIsFav(true);
+        }       
+    }, []);
+
+
+    const favoriteButtonClickHandler = async () => {
+        setIsFav(!isFav);
+        await favoriteButtonHandler(currentUser, product);
+    };
 
     const addToCartHandler = () => {
         modifyCart(product);
@@ -23,6 +43,11 @@ const ProductCard = ({product}) => {
 
     return (
         <div className='product-card-container'>
+            <div className={currentUser ? 'favorite' : 'hidden'}>
+                <span onClick={favoriteButtonClickHandler} className={'fav-button'}>
+                    <FontAwesomeIcon icon={faHeart} style={isFav ? {color: "red"} : {color: "#ffffff"}} />
+                </span>
+            </div>
             <img src={imageUrl} alt={`${name}`} />
             <div className='footer'>
                 <span className='name'>{name}</span>

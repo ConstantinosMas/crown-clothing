@@ -67,6 +67,51 @@ export const getAuthUserCart = async (userAuth) => {
     }
 };
 
+export const favoriteButtonHandler = async (userAuth, productToAdd) => {
+    if (!userAuth) { return; }
+
+    const userDocRef = doc(db, 'users', userAuth.uid);
+    const userSnapshot = await getDoc(userDocRef);
+    const userFavoritesArray = userSnapshot.data().favorites;
+
+    if (userSnapshot.exists()) {
+        const productIsFavorite = userFavoritesArray.find((product) => {return product.id == productToAdd.id});
+        if (productIsFavorite) {
+            try {
+                const newFavsArray = userFavoritesArray.filter((product) => {return product.id !== productToAdd.id});     
+                await updateDoc(userDocRef, {
+                    'favorites': newFavsArray
+                });
+                return;
+            } catch(error) {
+                console.log(`The following error occured while removing product from favorites: ${error.message}`)    
+            }
+
+        }
+
+        try {
+            await updateDoc(userDocRef, {
+                'favorites': [...userFavoritesArray, productToAdd]
+            });
+        } catch(error) {
+            console.log(`The following error occured while adding product to favorites: ${error.message}`)    
+        }
+    }
+};
+
+export const getAuthUserFavorites = async (userAuth) => {
+    const userDocRef = doc(db, 'users', userAuth.uid);
+    const userSnapshot = await getDoc(userDocRef);
+
+    if (userSnapshot.exists()) {
+        try {
+            return userSnapshot.data().favorites;
+        } catch(error) {
+            console.log(`The following error occured while getting favorites data: ${error.message}`)
+        }
+    }
+};
+
 export const getCategoriesAndDocuments = async() => {
     const collectionRef = collection(db, 'categories');
     const q = query(collectionRef);
@@ -98,6 +143,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
                 createdAt,
                 ...additionalInfo,
                 userCart: [],
+                favorites: [],
             });
         } catch(error) {
             console.log(`The following error occured while creating the user: ${error.message}`)

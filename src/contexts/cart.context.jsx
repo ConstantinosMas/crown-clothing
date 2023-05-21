@@ -66,7 +66,7 @@ export const CartProvider = ({children}) => {
     }, [makeCartIconPulsate]);
 
     useEffect(() => {  
-        saveCartToAuthUser(currentUser, cartItems);    
+        currentUser && saveCartToAuthUser(currentUser, cartItems);    
     }, [cartItems]);
 
     useEffect(() => {
