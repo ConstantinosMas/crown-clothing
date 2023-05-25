@@ -17,6 +17,10 @@ body {
   font-family: 'Barlow Condensed', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 430px) {
+    padding: 5px;
+  }
 }
 
 code {
