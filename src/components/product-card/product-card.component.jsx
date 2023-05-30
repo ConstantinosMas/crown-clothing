@@ -11,7 +11,7 @@ import './product-card.styles.scss';
 const ProductCard = ({product}) => {
 
     const {name, imageUrl, price} = product;
-    const {modifyCart, setMakeCartIconPulsate} = useContext(CartContext);
+    const {modifyCart, setterMethod, SETTER_METHOD_TYPES} = useContext(CartContext);
     const {currentUser, userFavorites} = useContext(UserContext);
     const [isFav, setIsFav] = useState(false);
 
@@ -36,7 +36,7 @@ const ProductCard = ({product}) => {
             behavior: "smooth"
         });      
         setTimeout(() => {
-            setMakeCartIconPulsate(true);
+            setterMethod(SETTER_METHOD_TYPES.setMakeCartIconPulsate, true);
         }, 500);
         
     }

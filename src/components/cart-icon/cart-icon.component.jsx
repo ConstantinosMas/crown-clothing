@@ -1,13 +1,13 @@
 import { ReactComponent as ShoppingIcon } from '../../assets/shopping-bag.svg';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { CartContext } from '../../contexts/cart.context';
 import './cart-icon.styles.scss';
 
 const CartIcon = () => {
 
-    const {iscartDropdownOpen, setiscartDropdownOpen, cartCount, makeCartIconPulsate} = useContext(CartContext);
+    const {iscartDropdownOpen, cartCount, makeCartIconPulsate, setterMethod, SETTER_METHOD_TYPES} = useContext(CartContext);
     const dropdownHandler = () => {
-        setiscartDropdownOpen(!iscartDropdownOpen);
+        setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen, !iscartDropdownOpen);
     };
     
     

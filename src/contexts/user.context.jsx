@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useReducer } from "react";
 import { onAuthStateChangedListener, createUserDocumentFromAuth, getAuthUserFavorites } from "../utils/firebase/firebase.utils";
 
 export const UserContext = createContext({
@@ -7,10 +7,46 @@ export const UserContext = createContext({
     userFavorites: [],
 });
 
-export const UserProvider = ({children}) => {
+const USER_ACTION_TYPES = {
+    SET_CURRENT_USER: 'SET_CURRENT_USER',
+    SET_USER_FAVORITES: 'SET_USER_FAVORITES',
+};
 
-    const [currentUser, setCurrentUser] = useState(null);
-    const [userFavorites, setUserFavorites] = useState([]);
+const userReducer = (state, action) => {
+    const { type, payload } = action;
+
+    switch(type) {
+        case USER_ACTION_TYPES.SET_CURRENT_USER:
+            return {
+                ...state,
+                currentUser: payload
+            };
+        case USER_ACTION_TYPES.SET_USER_FAVORITES:
+            return {
+                ...state,
+                userFavorites: payload
+            };    
+        default:
+            throw new Error(`Unhandled type ${type} in userReducer`);
+    }
+};
+
+const INITIAL_STATE = {
+    currentUser: null, 
+    userFavorites: [],
+};
+
+export const UserProvider = ({children}) => {
+    const [{ currentUser, userFavorites }, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+    const setCurrentUser = (user) => {
+        dispatch({type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user}) // dispatch receives the ACTION object which consists of a type and an optional payload
+    };
+    
+    const setUserFavorites = (favorites) => {
+        dispatch({type: USER_ACTION_TYPES.SET_USER_FAVORITES, payload: favorites});
+    };
+
     const value = {currentUser, setCurrentUser, userFavorites};
 
     useEffect(() => {

@@ -11,13 +11,13 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
-    useEffect(() => {
-        const getResultFromRedirect = async () => {
-            const response = await getRedirectResult(auth);
-        }
+    // useEffect(() => {
+    //     const getResultFromRedirect = async () => {
+    //         const response = await getRedirectResult(auth);
+    //     }
 
-        getResultFromRedirect();        
-    }, []);
+    //     getResultFromRedirect();        
+    // }, []);
 
     const logGoogleUser = async () => {
         const {user} = await signInWithGooglePopup();
