@@ -1,8 +1,13 @@
-import { createContext, useState, useEffect, useContext, useReducer } from "react";
+import { createContext, useEffect, useContext, useReducer } from "react";
 import { saveCartToAuthUser, getAuthUserCart } from "../utils/firebase/firebase.utils";
 import { UserContext } from "./user.context";
+import { createAction } from "../utils/reducer/reducer.utils";
 
 
+// The logic of cart context is this: any action that changes the cart(add item, increase/decrease item quantity, delete item from button or decrease button)
+// is handled by modifyCart. Internally, modifyCart either uses modifyCartItems or removeCartItem, but neither of these are exposed to other components.
+// Instead of saving values to state, we use a reducer. Anything that has to do with SETTING a value in the reducer is handled by the setterMethod.
+// Even the modifyCart function, which handles all changes to the cart, eventually calls the setterMethod.
 
 const modifyCartItems = (cartItems, productToModify, modifyType) => {
     const existingCartItem = cartItems.find((cartItem) => {return cartItem.id == productToModify.id});
@@ -84,6 +89,8 @@ export const CartProvider = ({children}) => {
     const {currentUser} = useContext(UserContext);
     const [{ iscartDropdownOpen, cartItems, cartCount, totalPrice, makeCartIconPulsate }, dispatch] = useReducer(cartReducer, INITIAL_STATE);
 
+    console.log(createAction('THIS METHOD', 'THIS VALUE'));
+
     const SETTER_METHOD_TYPES = {
         setiscartDropdownOpen: 'setiscartDropdownOpen',
         setCartItems: 'setCartItems',
@@ -94,15 +101,16 @@ export const CartProvider = ({children}) => {
     const setterMethod = (setter, setterValue = null) => {
         switch(setter) {
             case SETTER_METHOD_TYPES.setiscartDropdownOpen:
-                dispatch({type: CART_ACTION_TYPES.TOGGLE_CART_DROPDOWN});
+                dispatch(createAction(CART_ACTION_TYPES.TOGGLE_CART_DROPDOWN));
                 break;
 
             case SETTER_METHOD_TYPES.setCartItems:
-                dispatch({type: CART_ACTION_TYPES.SET_CART_ITEMS, payload: setterValue});
+                dispatch(createAction(CART_ACTION_TYPES.SET_CART_ITEMS, setterValue));
                 break;
 
             case SETTER_METHOD_TYPES.setMakeCartIconPulsate:
-                dispatch({type: CART_ACTION_TYPES.MAKE_CART_ICON_PULSATE, payload: setterValue});
+                dispatch(createAction(CART_ACTION_TYPES.MAKE_CART_ICON_PULSATE, setterValue));
+                break;
         }
     };
 

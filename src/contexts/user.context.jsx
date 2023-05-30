@@ -1,5 +1,6 @@
-import { createContext, useState, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { onAuthStateChangedListener, createUserDocumentFromAuth, getAuthUserFavorites } from "../utils/firebase/firebase.utils";
+import { createAction } from "../utils/reducer/reducer.utils";
 
 export const UserContext = createContext({
     currentUser: null,
@@ -40,11 +41,11 @@ export const UserProvider = ({children}) => {
     const [{ currentUser, userFavorites }, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
     const setCurrentUser = (user) => {
-        dispatch({type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user}) // dispatch receives the ACTION object which consists of a type and an optional payload
+        dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user))
     };
     
     const setUserFavorites = (favorites) => {
-        dispatch({type: USER_ACTION_TYPES.SET_USER_FAVORITES, payload: favorites});
+        dispatch(createAction(USER_ACTION_TYPES.SET_USER_FAVORITES, favorites));
     };
 
     const value = {currentUser, setCurrentUser, userFavorites};
