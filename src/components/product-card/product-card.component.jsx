@@ -1,7 +1,8 @@
-import { useContext, useState, useEffect } from 'react';
-import { CartContext } from '../../contexts/cart.context';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectCurrentUser, selectUserFavorites } from '../../store/user/user.selectors';
+import { modifyCart, setterMethod } from '../../store/cart/cart.action';
+import { SETTER_METHOD_TYPES } from '../../store/cart/cart.types';
 import { favoriteButtonHandler } from '../../utils/firebase/firebase.utils';
 import Button from '../button/button.component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,19 +12,17 @@ import './product-card.styles.scss';
 
 const ProductCard = ({product}) => {
 
+    const dispatch = useDispatch();
     const {name, imageUrl, price} = product;
-    const {modifyCart, setterMethod, SETTER_METHOD_TYPES} = useContext(CartContext);
     const currentUser = useSelector(selectCurrentUser);
     const userFavorites = useSelector(selectUserFavorites);
     const [isFav, setIsFav] = useState(false);
 
     
     useEffect(() => {
-        if (userFavorites) {
             const productIsFav = userFavorites.find((item) => {return item.id == product.id});
-            productIsFav && setIsFav(true);
-        }       
-    }, []);
+            productIsFav && setIsFav(true);   
+    }, [userFavorites]);
 
 
     const favoriteButtonClickHandler = async () => {
@@ -32,13 +31,13 @@ const ProductCard = ({product}) => {
     };
 
     const addToCartHandler = () => {
-        modifyCart(product);
+        dispatch(modifyCart(product));
         window.scrollTo({
             top: 0,
             behavior: "smooth"
         });      
         setTimeout(() => {
-            setterMethod(SETTER_METHOD_TYPES.setMakeCartIconPulsate, true);
+            dispatch(setterMethod(SETTER_METHOD_TYPES.setMakeCartIconPulsate, true));
         }, 500);
         
     }

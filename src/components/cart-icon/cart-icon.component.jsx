@@ -1,13 +1,19 @@
 import { ReactComponent as ShoppingIcon } from '../../assets/shopping-bag.svg';
-import { useContext } from 'react';
-import { CartContext } from '../../contexts/cart.context';
+import { useSelector, useDispatch } from 'react-redux';
+import { setterMethod } from '../../store/cart/cart.action';
+import { SETTER_METHOD_TYPES } from '../../store/cart/cart.types';
+import { selectIsCartDropdownOpen, selectCartCount, selectCartIconPulsate } from '../../store/cart/cart.selectors';
 import './cart-icon.styles.scss';
 
 const CartIcon = () => {
 
-    const {iscartDropdownOpen, cartCount, makeCartIconPulsate, setterMethod, SETTER_METHOD_TYPES} = useContext(CartContext);
+    const dispatch = useDispatch();
+    const iscartDropdownOpen = useSelector(selectIsCartDropdownOpen);
+    const cartCount = useSelector(selectCartCount);
+    const makeCartIconPulsate = useSelector(selectCartIconPulsate);
+
     const dropdownHandler = () => {
-        setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen, !iscartDropdownOpen);
+        dispatch(setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen,true));
     };
     
     
