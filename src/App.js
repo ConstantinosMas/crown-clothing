@@ -1,5 +1,9 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { onAuthStateChangedListener, createUserDocumentFromAuth, getAuthUserFavorites } from './utils/firebase/firebase.utils';
+import { setCurrentUser, setUserFavorites } from './store/user/user.action';
+
 import Home from "./routes/home/home.component";
 import Navigation from './routes/navigation/navigation.component';
 import Authentication from './routes/authentication/authentication';
@@ -8,6 +12,29 @@ import Checkout from './routes/checkout/checkout.component';
 
 
 const App = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChangedListener((user) => { //the onAuthStateChanged function returns the unsbriscribe method itself, so you just call it
+      if (user) {
+            createUserDocumentFromAuth(user);
+        }         
+        dispatch(setCurrentUser(user));
+
+        const setUserFavs = async () => {
+            if (user) {
+              dispatch(setUserFavorites(await getAuthUserFavorites(user)));
+            } else {
+              dispatch(setUserFavorites(null));
+            }
+        }
+
+        setUserFavs();   
+    });
+
+    return unsubscribe;
+}, []);
 
   return (
     <Fragment>

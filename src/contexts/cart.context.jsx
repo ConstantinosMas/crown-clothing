@@ -48,8 +48,6 @@ export const CartContext = createContext({
 const CART_ACTION_TYPES = {
     TOGGLE_CART_DROPDOWN: 'TOGGLE_CART_DROPDOWN',
     SET_CART_ITEMS: 'SET_CART_ITEMS',
-    SET_CART_COUNT: 'SET_CART_COUNT',
-    SET_CART_TOTAL: 'SET_CART_TOTAL',
     MAKE_CART_ICON_PULSATE: 'MAKE_CART_ICON_PULSATE',
 };
 
@@ -88,8 +86,6 @@ const INITIAL_STATE = {
 export const CartProvider = ({children}) => {
     const {currentUser} = useContext(UserContext);
     const [{ iscartDropdownOpen, cartItems, cartCount, totalPrice, makeCartIconPulsate }, dispatch] = useReducer(cartReducer, INITIAL_STATE);
-
-    console.log(createAction('THIS METHOD', 'THIS VALUE'));
 
     const SETTER_METHOD_TYPES = {
         setiscartDropdownOpen: 'setiscartDropdownOpen',

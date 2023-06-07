@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { CartContext } from '../../contexts/cart.context';
-import { UserContext } from '../../contexts/user.context';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser, selectUserFavorites } from '../../store/user/user.selectors';
 import { favoriteButtonHandler } from '../../utils/firebase/firebase.utils';
 import Button from '../button/button.component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,7 +13,8 @@ const ProductCard = ({product}) => {
 
     const {name, imageUrl, price} = product;
     const {modifyCart, setterMethod, SETTER_METHOD_TYPES} = useContext(CartContext);
-    const {currentUser, userFavorites} = useContext(UserContext);
+    const currentUser = useSelector(selectCurrentUser);
+    const userFavorites = useSelector(selectUserFavorites);
     const [isFav, setIsFav] = useState(false);
 
     
