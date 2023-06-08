@@ -31,7 +31,7 @@ const modifyCartItems = (cartItems, productToModify, modifyType) => {
 export const setterMethod = (setter, setterValue = null) => {
     switch(setter) {
         case SETTER_METHOD_TYPES.setiscartDropdownOpen:
-            return createAction(CART_ACTION_TYPES.TOGGLE_CART_DROPDOWN);
+            return createAction(CART_ACTION_TYPES.TOGGLE_CART_DROPDOWN, setterValue);
 
         case SETTER_METHOD_TYPES.setCartItems:
             return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, setterValue);
@@ -60,12 +60,12 @@ export const modifyCart = (productToModify, modifyType = 'increase', receivedCar
             break; 
     }
 
-    const newTotal = newCart.reduce((total, currentItem) => {return total + currentItem.price * currentItem.quantity}, 0);
-    const newCartCount = newCart.reduce((total, currentItem) => {return total + currentItem.quantity}, 0);
-    const newPayload = {
-        cartItems: newCart,
-        cartCount: newCartCount,
-        totalPrice: newTotal
-    };
-    return setterMethod(SETTER_METHOD_TYPES.setCartItems, newPayload);
+    // const newTotal = newCart.reduce((total, currentItem) => {return total + currentItem.price * currentItem.quantity}, 0);
+    // const newCartCount = newCart.reduce((total, currentItem) => {return total + currentItem.quantity}, 0);
+    // const newPayload = {
+    //     cartItems: newCart,
+    //     cartCount: newCartCount,
+    //     totalPrice: newTotal
+    // };
+    return setterMethod(SETTER_METHOD_TYPES.setCartItems, newCart);
 }

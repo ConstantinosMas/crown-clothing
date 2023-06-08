@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { onAuthStateChangedListener, createUserDocumentFromAuth, getAuthUserFavorites, saveCartToAuthUser, getAuthUserCart } from './utils/firebase/firebase.utils';
 import { setCurrentUser, setUserFavorites } from './store/user/user.action';
 import { modifyCart } from './store/cart/cart.action';
+import { setterMethod } from './store/cart/cart.action';
+import { SETTER_METHOD_TYPES } from './store/cart/cart.types';
 import { selectCurrentUser } from './store/user/user.selectors';
-import { selectCartItems } from './store/cart/cart.selectors';
+import { selectCartItems, selectIsCartDropdownOpen } from './store/cart/cart.selectors';
 
 import Home from "./routes/home/home.component";
 import Navigation from './routes/navigation/navigation.component';
@@ -19,6 +21,7 @@ const App = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
   const cartItems = useSelector(selectCartItems);
+  const isCartDropdownOpen = useSelector(selectIsCartDropdownOpen);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => { //the onAuthStateChanged function returns the unsbriscribe method itself, so you just call it
@@ -56,6 +59,18 @@ const App = () => {
         getCartFromFirestore();  
     }     
   }, [currentUser]);
+
+  const body = document.querySelector('body');
+  const cartSvg = document.querySelector('#Capa_1');
+  const cartIconNumber = document.querySelector('.item-count');
+  const cartIconContainer = document.querySelector('.cart-icon-container');
+  body.addEventListener('click', event => {
+    if (isCartDropdownOpen) {
+      if (event.target != cartSvg && event.target != cartIconNumber && event.target != cartIconContainer) {
+        dispatch(setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen, false));
+      }
+    }  
+  });
 
   return (
     <Fragment>

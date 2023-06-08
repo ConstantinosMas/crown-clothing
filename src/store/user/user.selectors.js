@@ -1,3 +1,13 @@
-export const selectCurrentUser = (state) => state.user.currentUser;
+import { createSelector } from "reselect";
 
-export const selectUserFavorites = (state) => state.user.userFavorites;
+const selectUserReducer = (state) => state.user;
+
+export const selectCurrentUser = createSelector(
+    [selectUserReducer],
+    (user) => user.currentUser
+);
+
+export const selectUserFavorites = createSelector(
+    [selectUserReducer],
+    (user) => user.userFavorites
+);

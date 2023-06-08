@@ -13,7 +13,7 @@ const CartIcon = () => {
     const makeCartIconPulsate = useSelector(selectCartIconPulsate);
 
     const dropdownHandler = () => {
-        dispatch(setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen,true));
+        dispatch(setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen, !iscartDropdownOpen));
     };
     
     

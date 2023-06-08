@@ -20,8 +20,10 @@ const ProductCard = ({product}) => {
 
     
     useEffect(() => {
+        if (currentUser) {
             const productIsFav = userFavorites.find((item) => {return item.id == product.id});
-            productIsFav && setIsFav(true);   
+            productIsFav && setIsFav(true); 
+        }             
     }, [userFavorites]);
 
 
