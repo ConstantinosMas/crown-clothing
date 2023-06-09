@@ -54,6 +54,8 @@ const App = () => {
             const savedCart = await getAuthUserCart(currentUser);
             if (savedCart.length > 0) {
                 dispatch(modifyCart(null, 'restoringUserCart', savedCart));
+            } else {
+                saveCartToAuthUser(currentUser, cartItems)
             }
         };
         getCartFromFirestore();  
