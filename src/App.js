@@ -1,8 +1,8 @@
 import { Fragment, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { onAuthStateChangedListener, createUserDocumentFromAuth, getAuthUserFavorites, saveCartToAuthUser, getAuthUserCart } from './utils/firebase/firebase.utils';
-import { setCurrentUser, setUserFavorites } from './store/user/user.action';
+import { onAuthStateChangedListener, createUserDocumentFromAuth, getAuthUserFavorites, saveCartToAuthUser, getAuthUserCart, getCurrentUser, getUserFavorites } from './utils/firebase/firebase.utils';
+import { setCurrentUser, setUserFavorites, checkUserSession} from './store/user/user.action';
 import { modifyCart } from './store/cart/cart.action';
 import { setterMethod } from './store/cart/cart.action';
 import { SETTER_METHOD_TYPES } from './store/cart/cart.types';
@@ -23,29 +23,39 @@ const App = () => {
   const cartItems = useSelector(selectCartItems);
   const isCartDropdownOpen = useSelector(selectIsCartDropdownOpen);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => { //the onAuthStateChanged function returns the unsbriscribe method itself, so you just call it
-      if (user) {
-            createUserDocumentFromAuth(user);
-        }         
-        dispatch(setCurrentUser(user));
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChangedListener((user) => { //the onAuthStateChanged function returns the unsbriscribe method itself, so you just call it
+//       if (user) {
+//             createUserDocumentFromAuth(user);
+//         }         
+//         dispatch(setCurrentUser(user));
 
-        const setUserFavs = async () => {
-            if (user) {
-              dispatch(setUserFavorites(await getAuthUserFavorites(user)));
-            } else {
-              dispatch(setUserFavorites(null));
-            }
-        }
+//         const setUserFavs = async () => {
+//             if (user) {
+//               dispatch(setUserFavorites(await getAuthUserFavorites(user)));
+//             } else {
+//               dispatch(setUserFavorites(null));
+//             }
+//         }
 
-        setUserFavs();   
-    });
+//         setUserFavs();   
+//     });
 
-    return unsubscribe;
-}, []);
+//     return unsubscribe;
+// }, []);
 
   useEffect(() => {  
-    currentUser && saveCartToAuthUser(currentUser, cartItems);    
+    dispatch(checkUserSession());
+    // getCurrentUser().then((user) => getUserFavorites(user).then((favorites) => console.log(favorites)));  
+    
+  }, []);
+
+  // useEffect(() => {  
+  //   currentUser && getUserFavorites(currentUser).then((favorites) => dispatch(setUserFavorites(favorites)));
+  // }, [currentUser]);
+
+  useEffect(() => {  
+    currentUser && saveCartToAuthUser(currentUser, cartItems);
   }, [cartItems]);
 
   useEffect(() => {

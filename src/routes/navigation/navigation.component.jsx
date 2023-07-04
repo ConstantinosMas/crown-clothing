@@ -4,10 +4,10 @@ import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 import { useSelector, useDispatch } from 'react-redux';
 import { setterMethod } from '../../store/cart/cart.action';
+import { signOutStart } from '../../store/user/user.action';
 import { SETTER_METHOD_TYPES } from '../../store/cart/cart.types';
 import { selectCurrentUser } from '../../store/user/user.selectors';
 import { selectIsCartDropdownOpen } from '../../store/cart/cart.selectors';
-import { SignOutUser } from '../../utils/firebase/firebase.utils';
 import { ReactComponent as CrownLogo } from '../../assets/crown.svg';
 import './navigation.styles.scss';
 
@@ -22,6 +22,9 @@ const Navigation = () => {
     const burgerButtonhandler = () => {
         iscartDropdownOpen && dispatch(setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen));
     };
+
+    const signOutHandler = () => dispatch(signOutStart());
+
     
     return (
       <Fragment>
@@ -44,7 +47,7 @@ const Navigation = () => {
                         </Link>
                     </li>
                     <li>{
-                        currentUser ? (<span className='nav-link' onClick={SignOutUser}>SIGN OUT</span>) : 
+                        currentUser ? (<span className='nav-link' onClick={signOutHandler}>SIGN OUT</span>) : 
                         (<Link className='nav-link' to='/auth'> 
                         <span className={currentRoute == '/auth' ? 'nav-link active' : 'nav-link'}>SIGN IN</span> 
                         </Link>)

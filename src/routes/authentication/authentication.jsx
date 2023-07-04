@@ -1,15 +1,17 @@
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user.selectors";
 import { Navigate } from "react-router-dom";
-import { UserContext } from "../../contexts/user.context";
+import { selectUserIsLoading } from "../../store/user/user.selectors";
 import SignUpForm from "../../components/sign-up-form/sign-up-form.component";
 import SignInForm from "../../components/sign-in-form/sign-in-form.component";
+import Spinner from '../../components/spinner/spinner.component';
 import './authentication.styles.scss'
 
 
 const Authentication = () => {
 
     const currentUser = useSelector(selectCurrentUser);
+    const isLoading = useSelector(selectUserIsLoading);
 
     if (currentUser) {
         return <Navigate replace to="/" />
@@ -22,14 +24,18 @@ const Authentication = () => {
     // }
 
     return (
-        <div className="authentication-container">
-            {/* <button onClick={logGoogleUser}>
-                Sign in with Google
-            </button> */}
-            
-            <SignInForm />
-            <SignUpForm />
-        </div>
+        isLoading ? (
+            <Spinner />
+            ) : (
+            <div className="authentication-container">
+                {/* <button onClick={logGoogleUser}>
+                    Sign in with Google
+                </button> */}
+                
+                <SignInForm />
+                <SignUpForm />
+            </div>
+        )
     )
 }
 

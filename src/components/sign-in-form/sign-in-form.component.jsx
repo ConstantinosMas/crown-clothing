@@ -1,6 +1,8 @@
 import { signInWithGooglePopup, signInWithGoogleRedirect, signInAuthUserWithEmailAndPassword, auth, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import { useEffect, useState} from "react";
 import { getRedirectResult } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { googleSignInStart, emailSignInStart } from "../../store/user/user.action";
 import FormInput from "../form-input/form-input.component";
 import Button from "../../components/button/button.component";
 import './sign-in-form.styles.scss';
@@ -19,9 +21,10 @@ const SignInForm = () => {
     //     getResultFromRedirect();        
     // }, []);
 
+    const dispatch = useDispatch();
+
     const logGoogleUser = async () => {
-        const {user} = await signInWithGooglePopup();
-        const userDocRef = await createUserDocumentFromAuth(user);
+        dispatch(googleSignInStart());
     }
 
     const [formFields, setFormFields] = useState(defaultFormFields);
@@ -38,11 +41,8 @@ const SignInForm = () => {
         event.preventDefault();
 
         try {
-            const user = await signInAuthUserWithEmailAndPassword(email, password);
-            if (user) {
-                resetFormFields();
-            }
-
+            dispatch(emailSignInStart(email, password));
+            resetFormFields();
         } catch(error) {
             switch (error.code) {
                 case 'auth/wrong-password':

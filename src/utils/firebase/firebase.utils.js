@@ -100,16 +100,17 @@ export const favoriteButtonHandler = async (userAuth, productToAdd) => {
 };
 
 export const getAuthUserFavorites = async (userAuth) => {
-    const userDocRef = doc(db, 'users', userAuth.uid);
-    const userSnapshot = await getDoc(userDocRef);
+    return;
+    // const userDocRef = doc(db, 'users', userAuth.uid);
+    // const userSnapshot = await getDoc(userDocRef);
 
-    if (userSnapshot.exists()) {
-        try {
-            return userSnapshot.data().favorites;
-        } catch(error) {
-            console.log(`The following error occured while getting favorites data: ${error.message}`)
-        }
-    }
+    // if (userSnapshot.exists()) {
+    //     try {
+    //         return userSnapshot.data().favorites;
+    //     } catch(error) {
+    //         console.log(`The following error occured while getting favorites data: ${error.message}`)
+    //     }
+    // }
 };
 
 export const getCategoriesAndDocuments = async() => {
@@ -144,7 +145,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
         }
     }
 
-    return userDocRef;
+    return userSnapshot;
 }
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -164,3 +165,32 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const SignOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(
+            auth,
+            (userAuth) => {
+                unsubscribe();
+                resolve(userAuth);
+            },
+            reject
+        );
+
+    });
+}
+
+export const getUserFavorites = async (userAuth) => {
+    const userDocRef = doc(db, 'users', userAuth.uid);
+    const userSnapshot = await getDoc(userDocRef);
+
+    return new Promise((resolve, reject) => {
+        if (userSnapshot.exists()) {
+            const favs = userSnapshot.data().favorites;
+            resolve(favs);
+        }
+    })
+    .catch((err) => {   
+        console.log(err);
+    })
+};

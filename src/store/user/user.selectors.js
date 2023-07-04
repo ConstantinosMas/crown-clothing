@@ -11,3 +11,8 @@ export const selectUserFavorites = createSelector(
     [selectUserReducer],
     (user) => user.userFavorites
 );
+
+export const selectUserIsLoading = createSelector(
+    [selectUserReducer],
+    (user) => user.isLoading
+);
