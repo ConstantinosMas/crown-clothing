@@ -15,6 +15,7 @@
     cursor: pointer;
     display: flex;
     justify-content: center;
+    align-items: center;
   
     &:hover {
       background-color: white;
@@ -31,6 +32,11 @@
         border: none;
       }
     }
+
+    &.paymentButton {
+      margin-left: auto;
+      margin-top: 30px;
+    }
   
     &.inverted {
       background-color: white;
@@ -44,3 +50,31 @@
       }
     }
   }
+
+  .buttonSpinner {
+    margin-left: auto;
+    background-color: white;
+    color: white;
+    font-size: 0;
+    display: flex;
+    margin-right: 70px;
+    margin-top: 40px;
+    flex: auto;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(195, 195, 195, 0.6);
+    border-radius: 50%;
+    border-top-color: #636767;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+    @-webkit-keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+}

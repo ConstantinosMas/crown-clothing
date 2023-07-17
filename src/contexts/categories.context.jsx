@@ -1,25 +1,16 @@
 // import { createContext, useState, useEffect } from "react";
-// import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils";
 
-// export const CategoriesContext = createContext({
-//     categoriesMap: {},
+// export const PaymentSuccessContext = createContext({
+//     isPaymentSuccessful: false,
+//     SetIsPaymentSuccessful: () => {},
 
 // });
 
-// export const CategoriesProvider = ({children}) => {
+// export const PaymentSuccessProvider = ({children}) => {
 
-//     const [categoriesMap, setCategoriesMap] = useState({});
-//     const value = {categoriesMap};
+//     const [isPaymentSuccessful, SetIsPaymentSuccessful] = useState(false);
+//     const value = {isPaymentSuccessful, SetIsPaymentSuccessful};
 
-//     useEffect(()=>{
-//         const getShopItems = async () => {
-//             const categoryMap = await getCategoriesAndDocuments();
-//             setCategoriesMap(categoryMap);
-//         };
-
-//         getShopItems();
-//     }, []);
-
-//     return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>
+//     return <PaymentSuccessContext.Provider value={value}>{children}</PaymentSuccessContext.Provider>
 
 // }
