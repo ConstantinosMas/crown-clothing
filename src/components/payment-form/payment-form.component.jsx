@@ -18,7 +18,7 @@ const PaymentForm = () => {
 
     const amount = useSelector(selectTotalPrice);
     const currentUser = useSelector(selectCurrentUser);
-    const orderItems = useSelector(selectCartItems).map(({ imageUrl, ...details }) => {return details})
+    const orderItems = useSelector(selectCartItems).map(({ imageUrl, ...details }) => {return details});
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
 
