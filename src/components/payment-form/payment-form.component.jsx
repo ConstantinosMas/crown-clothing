@@ -26,7 +26,7 @@ const PaymentForm = () => {
         e.preventDefault();
 
         const orderDetails = {
-            name: currentUser.displayName,
+            name: currentUser ? currentUser.displayName : 'Guest',
             amount: amount,
             products: orderItems
         };
