@@ -27,6 +27,7 @@ const PaymentForm = () => {
 
         const orderDetails = {
             name: currentUser ? currentUser.displayName : 'Guest',
+            userId: currentUser ? currentUser.uid : '',
             amount: amount,
             products: orderItems
         };
