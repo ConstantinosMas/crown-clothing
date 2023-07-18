@@ -1,13 +1,14 @@
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectTotalPrice } from '../../store/cart/cart.selectors';
 import { selectCurrentUser } from '../../store/user/user.selectors';
-import { selectPaymentSuccess, setPaymentSuccess } from "../../store/payment-succcess/payment-success";
+import { setPaymentSuccess } from "../../store/payment-succcess/payment-success";
 import { setterMethod } from "../../store/cart/cart.action";
 import { SETTER_METHOD_TYPES } from "../../store/cart/cart.types";
+import { selectCartItems } from "../../store/cart/cart.selectors";
+import { saveOrderToDb } from "../../utils/firebase/firebase.utils";
 import Button from "../button/button.component";
-import OrderComplete from "../order-complete/order-complete.component";
 import './payment-form.styles.scss';
 
 const PaymentForm = () => {
@@ -17,12 +18,18 @@ const PaymentForm = () => {
 
     const amount = useSelector(selectTotalPrice);
     const currentUser = useSelector(selectCurrentUser);
-    const isPaymentSuccessful = useSelector(selectPaymentSuccess);
+    const orderItems = useSelector(selectCartItems).map(({ imageUrl, ...details }) => {return details})
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
 
     const paymentHandler = async (e) => {
         e.preventDefault();
+
+        const orderDetails = {
+            name: currentUser.displayName,
+            amount: amount,
+            products: orderItems
+        };
 
         if (!stripe || !elements) { return; }
 
@@ -54,6 +61,7 @@ const PaymentForm = () => {
         } else {
             if (paymentResult.paymentIntent.status === 'succeeded') {
                 dispatch(setterMethod(SETTER_METHOD_TYPES.setCartItems, []));
+                await saveOrderToDb(orderDetails);
                 dispatch(setPaymentSuccess(true));
             }
         }

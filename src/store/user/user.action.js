@@ -10,6 +10,10 @@ export const setUserFavorites = (favorites) => {
     return createAction(USER_ACTION_TYPES.SET_USER_FAVORITES, favorites);
 };
 
+export const clearUserError = () => {
+    return createAction(USER_ACTION_TYPES.CLEAR_USER_ERROR)
+};
+
 export const checkUserSession = () => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION);
 
 export const googleSignInStart = () => createAction(USER_ACTION_TYPES.GOOGLE_SIGN_IN_START);

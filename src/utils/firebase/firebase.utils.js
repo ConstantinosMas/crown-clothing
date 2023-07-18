@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch, query, getDocs, updateDoc, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyB_TFXgQ2y9TNVTlMGcdX4oujv5iBO2wik",
@@ -111,6 +111,10 @@ export const getAuthUserFavorites = async (userAuth) => {
     //         console.log(`The following error occured while getting favorites data: ${error.message}`)
     //     }
     // }
+};
+
+export const saveOrderToDb = async (order) => {
+    await addDoc(collection(db, 'orders'), order);
 };
 
 export const getCategoriesAndDocuments = async() => {

@@ -1,8 +1,9 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signUpStart } from "../../store/user/user.action";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
+import WarningMessage from "../warning-message/warning.component";
 import './sign-up-form.styles.scss';
 
 const defaultFormFields = {
@@ -16,8 +17,12 @@ const SignUpForm = () => {
 
     const dispatch = useDispatch();
 
+    
+
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = formFields;
+    const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
 
     const resetFormFields = () => setFormFields(defaultFormFields);
 
@@ -29,9 +34,36 @@ const SignUpForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setPasswordsDontMatch(false);
+        setPasswordError(false);
+
+        if (password.length < 8 ) {
+            setPasswordError(true);
+            return;
+        }
+
+        let number = false;
+        let letter = false;
+        const passwordArray = password.split('');
+        for (let i=0;i < passwordArray.length; i++) {
+            if (/^\d$/.test(passwordArray[i])) {
+                number = true;
+            } else {
+                letter = true;
+            }
+        }
+
+        if (!number) {
+            setPasswordError(true);
+            return;
+        } else if (!letter) {
+            setPasswordError(true);
+            return;
+        }
+
 
         if (password != confirmPassword) {
-            alert("Passwords don't match!");
+            setPasswordsDontMatch(true);
             return;                
         }
 
@@ -39,12 +71,7 @@ const SignUpForm = () => {
             dispatch(signUpStart(email, password, displayName));
             resetFormFields();
         } catch (error) {
-            if (error.message.includes('already-in-use')) {
-                alert('Email already in use');
-            } else {
-                console.log(`The following error occured while registering the user: ${error.message}`);         
-            }
-            return;     
+
         }   
     }
 
@@ -77,6 +104,7 @@ const SignUpForm = () => {
                     onChange={handleChange}
                     required
                     />
+                {passwordError && <WarningMessage warningText="Password must be at least 8 characters long and contain at least 1 number"/> }
                 <FormInput 
                     label='Confirm Password'
                     type='password'
@@ -85,6 +113,7 @@ const SignUpForm = () => {
                     onChange={handleChange}
                     required
                     />
+                {passwordsDontMatch && <WarningMessage warningText="Password don't match"/> }
                 <Button 
                     type='submit' 
                     buttonTitle='Sign Up'
