@@ -11,6 +11,16 @@ export const userReducer = (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
 
     switch(type) {
+        case USER_ACTION_TYPES.END_LOADING:
+            return {
+                ...state,
+                isLoading: false
+            }
+        case USER_ACTION_TYPES.CHECK_USER_SESSION:
+            return {
+                ...state,
+                isLoading: true
+            }
         case USER_ACTION_TYPES.SIGN_UP_START:
         case USER_ACTION_TYPES.EMAIL_SIGN_IN_START:
         case USER_ACTION_TYPES.GOOGLE_SIGN_IN_START:
@@ -37,7 +47,8 @@ export const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 currentUser: null,
-                userFavorites: null
+                userFavorites: null,
+                isLoading: false
             }
         case USER_ACTION_TYPES.SET_USER_FAVORITES:
             return {

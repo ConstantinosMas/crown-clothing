@@ -52,7 +52,7 @@ const Checkout = () => {
             { cartItems.length == 0 && <span className='empty-cart'>No items in your cart</span> }
             { cartItems.length > 0 && <span className='total'>TOTAL: ${totalPrice}</span> }
 
-            <PaymentForm />
+            { cartItems.length > 0 && <PaymentForm /> }
         </div>
         )
         }          

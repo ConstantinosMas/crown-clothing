@@ -1,6 +1,6 @@
 import {all, call, put, take, takeLatest} from 'redux-saga/effects';
 import { USER_ACTION_TYPES } from './user.types';
-import { signInSuccess, signInFailed, setUserFavorites, signUpFailed, signUpSuccess, signOutFailed, signOutSuccess, setCurrentUser } from './user.action';
+import { signInSuccess, signInFailed, setUserFavorites, signUpFailed, signUpSuccess, signOutFailed, signOutSuccess, endLoading } from './user.action';
 import { getCurrentUser, getUserFavorites, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, SignOutUser } from '../../utils/firebase/firebase.utils';
 
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
@@ -67,7 +67,10 @@ export function* setAuthUserFavorites(userAuth) {
 export function* isUserAuthenticated() {
     try {
         const userAuth = yield call(getCurrentUser);
-        if (!userAuth) return;
+        if (!userAuth) {
+            yield put(endLoading())
+            return;
+        };
         yield call(getSnapshotFromUserAuth, userAuth);
         yield call(setAuthUserFavorites, userAuth);
     } catch(error) {
