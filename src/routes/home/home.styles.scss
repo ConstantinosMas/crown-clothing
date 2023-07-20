@@ -1,0 +1,78 @@
+.container {
+    position:relative;
+}
+
+#slideLeft {
+    position: absolute;
+    margin-left: 0;
+    margin-top: 80px;
+    width: 62%;
+    height: 70px;
+    animation: slide-right 2s;
+    
+    @keyframes slide-right {
+        from {
+            margin-left:-100%
+        }
+        to {
+            margin-left: 0;
+        }
+    }
+}
+
+#slideRight {
+    float:right;
+    position:absolute;
+    margin-left: 38%;
+    margin-top: 80px;
+    width: 62%;
+    height: 70px;
+    animation: slide-left 2s;
+    
+    @keyframes slide-left {
+        from {
+            margin-left:100%
+        }
+        to {
+            margin-left: 38%;
+        }
+    }
+}
+
+#circle-logo {
+    margin: 79px auto auto auto;
+    display: block;
+    position: relative;
+}
+
+.fade-in {
+    animation: fadeIn ease 2s;
+    -webkit-animation: fadeIn ease 4s;
+    -moz-animation: fadeIn ease 4s;
+    -o-animation: fadeIn ease 4s;
+    -ms-animation: fadeIn ease 4s;
+  }
+  @keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-moz-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-webkit-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-o-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
+  
+  @-ms-keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+  }
