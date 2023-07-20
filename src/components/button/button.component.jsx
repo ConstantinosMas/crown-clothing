@@ -7,7 +7,7 @@ const BUTTON_TYPE_CLASSES = {
 
 const Button = ({buttonTitle, buttonType, isLoading, paymentButton, ...otherProps}) => {
     return (
-        <button className={`${paymentButton ? 'paymentButton' : ''} ${isLoading ? 'buttonSpinner' : 'button-container'} ${BUTTON_TYPE_CLASSES[buttonType]}`} {...otherProps}>
+        <button className={`no-select ${paymentButton ? 'paymentButton' : ''} ${isLoading ? 'buttonSpinner' : 'button-container'} ${BUTTON_TYPE_CLASSES[buttonType]}`} {...otherProps}>
             {buttonTitle}
         </button>
     )

@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { setterMethod } from '../../store/cart/cart.action';
+import { SETTER_METHOD_TYPES } from '../../store/cart/cart.types';
 import { selectCartItems, selectTotalPrice } from '../../store/cart/cart.selectors';
 import { selectPaymentSuccess, setPaymentSuccess } from '../../store/payment-succcess/payment-success';
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
@@ -17,6 +19,10 @@ const Checkout = () => {
     const cartItems = useSelector(selectCartItems);
     const totalPrice = useSelector(selectTotalPrice);
     const isPaymentSuccessful = useSelector(selectPaymentSuccess);
+
+    const handleClearCart = () => {
+        dispatch(setterMethod(SETTER_METHOD_TYPES.setCartItems, []));
+    }
 
     return (
         <>
@@ -50,7 +56,12 @@ const Checkout = () => {
                 return (<CheckoutItem key={item.id} product={item}/>)
             })}
             { cartItems.length == 0 && <span className='empty-cart'>No items in your cart</span> }
+            <div className='bottom-container'>
+            { cartItems.length > 0 && <span onClick={handleClearCart} className='clear-cart'>Clear cart</span> }
             { cartItems.length > 0 && <span className='total'>TOTAL: ${totalPrice}</span> }
+
+            </div>
+            
 
             { cartItems.length > 0 && <PaymentForm /> }
         </div>

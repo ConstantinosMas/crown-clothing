@@ -1,10 +1,12 @@
 import { signInWithGooglePopup, signInWithGoogleRedirect, signInAuthUserWithEmailAndPassword, auth, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { getRedirectResult } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { googleSignInStart, emailSignInStart } from "../../store/user/user.action";
+import { useDispatch, useSelector } from "react-redux";
+import { googleSignInStart, emailSignInStart, clearUserError } from "../../store/user/user.action";
+import { selectUserError } from "../../store/user/user.selectors";
 import FormInput from "../form-input/form-input.component";
 import Button from "../../components/button/button.component";
+import WarningMessage from "../warning-message/warning.component";
 import './sign-in-form.styles.scss';
 
 const defaultFormFields = {
@@ -23,6 +25,8 @@ const SignInForm = () => {
 
     const dispatch = useDispatch();
 
+    const userError = useSelector(selectUserError);
+
     const logGoogleUser = async () => {
         dispatch(googleSignInStart());
     }
@@ -39,9 +43,11 @@ const SignInForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        dispatch(clearUserError());
 
         try {
             dispatch(emailSignInStart(email, password));
+            console.log(userError.message);
             resetFormFields();
         } catch(error) {
             switch (error.code) {
@@ -70,6 +76,7 @@ const SignInForm = () => {
                     onChange={handleChange}
                     required
                     />
+                { userError && userError.message.includes('user-not-found') && <WarningMessage warningText='Email not found' /> }
                 <FormInput 
                     label='Password'
                     type='password'
@@ -78,6 +85,7 @@ const SignInForm = () => {
                     onChange={handleChange}
                     required
                     />
+                { userError && userError.message.includes('wrong-password') && <WarningMessage warningText='Incorrect password' /> }
                 <div className="buttons-container">
                     <Button 
                         type='submit' 

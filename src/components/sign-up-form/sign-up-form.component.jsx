@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { signUpStart } from "../../store/user/user.action";
+import { useDispatch, useSelector } from "react-redux";
+import { signUpStart, clearUserError } from "../../store/user/user.action";
+import { selectUserError } from "../../store/user/user.selectors";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import WarningMessage from "../warning-message/warning.component";
@@ -21,6 +22,7 @@ const SignUpForm = () => {
 
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = formFields;
+    const userError = useSelector(selectUserError);
     const [passwordsDontMatch, setPasswordsDontMatch] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
 
@@ -34,6 +36,7 @@ const SignUpForm = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        dispatch(clearUserError());
         setPasswordsDontMatch(false);
         setPasswordError(false);
 
@@ -96,6 +99,7 @@ const SignUpForm = () => {
                     onChange={handleChange}
                     required
                     />
+                {userError && userError.message.includes('email-already-in-use') && <WarningMessage warningText="Email is already in use"/> }
                 <FormInput 
                     label='Password'
                     type='password'
@@ -113,7 +117,7 @@ const SignUpForm = () => {
                     onChange={handleChange}
                     required
                     />
-                {passwordsDontMatch && <WarningMessage warningText="Password don't match"/> }
+                {passwordsDontMatch && <WarningMessage warningText="Passwords don't match"/> }
                 <Button 
                     type='submit' 
                     buttonTitle='Sign Up'

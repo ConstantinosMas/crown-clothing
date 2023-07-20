@@ -1,10 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import CartIcon from '../../components/cart-icon/cart-icon.component';
 import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
 import { useSelector, useDispatch } from 'react-redux';
 import { setterMethod } from '../../store/cart/cart.action';
-import { signOutStart } from '../../store/user/user.action';
+import { signOutStart, clearUserError } from '../../store/user/user.action';
 import { SETTER_METHOD_TYPES } from '../../store/cart/cart.types';
 import { selectCurrentUser } from '../../store/user/user.selectors';
 import { selectIsCartDropdownOpen } from '../../store/cart/cart.selectors';
@@ -21,6 +21,10 @@ const Navigation = () => {
     const iscartDropdownOpen = useSelector(selectIsCartDropdownOpen);
     const currentUser = useSelector(selectCurrentUser);
     const currentRoute = useLocation().pathname;
+    
+    useEffect(() => {
+        dispatch(clearUserError());
+    }, [currentRoute]);
 
     const burgerButtonhandler = () => {
         iscartDropdownOpen && dispatch(setterMethod(SETTER_METHOD_TYPES.setiscartDropdownOpen));
@@ -42,8 +46,8 @@ const Navigation = () => {
                 </label>
                 <ul className="menu">
                     {currentUser && <li>
-                                        <Link className='nav-link' to='/favorites'>
-                                            <span className={currentRoute == '/favorites' ? 'nav-link active' : 'nav-link'}><FontAwesomeIcon icon={currentRoute == '/favorites' ? heartFill : heartEmpty} /></span>
+                                        <Link className='nav-link no-select' to='/favorites'>
+                                            <span className={currentRoute == '/favorites' ? 'nav-link active no-select' : 'nav-link no-select'}><FontAwesomeIcon icon={currentRoute == '/favorites' ? heartFill : heartEmpty} /></span>
                                         </Link>
                                    </li>}
                     <li><Link className='nav-link' to='/'>
