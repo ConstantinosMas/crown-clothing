@@ -11,9 +11,9 @@ const Home = () => {
     <div className='container'>
         <Directory />
 
-        <img id="slideLeft" src={leftArrow} />
-        <img id="slideRight" src={rightArrow} />
-        <img id='circle-logo' className='fade-in' src={crwn} />
+        <img alt='graphic-left' id="slideLeft" src={leftArrow} />
+        <img alt='graphic-right' id="slideRight" src={rightArrow} />
+        <img alt='logo' id='circle-logo' className='fade-in' src={crwn} />
     </div>
   );
 }
