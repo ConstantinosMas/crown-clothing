@@ -24,7 +24,7 @@ const App = () => {
   const cartItems = useSelector(selectCartItems);
   const isCartDropdownOpen = useSelector(selectIsCartDropdownOpen);
 
-  
+  //TEST TEST TEST
 //   useEffect(() => {
 //     const unsubscribe = onAuthStateChangedListener((user) => { //the onAuthStateChanged function returns the unsbriscribe method itself, so you just call it
 //       if (user) {
