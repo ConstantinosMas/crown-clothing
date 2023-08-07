@@ -29,7 +29,8 @@ const PaymentForm = () => {
             name: currentUser ? currentUser.displayName : 'Guest',
             userId: currentUser ? currentUser.uid : '',
             amount: amount,
-            products: orderItems
+            products: orderItems,
+            createdAt: new Date()
         };
 
         if (!stripe || !elements) { return; }
