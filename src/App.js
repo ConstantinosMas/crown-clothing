@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { onAuthStateChangedListener, createUserDocumentFromAuth, getAuthUserFavorites, saveCartToAuthUser, getAuthUserCart, getCurrentUser, getUserFavorites } from './utils/firebase/firebase.utils';
@@ -9,12 +9,20 @@ import { SETTER_METHOD_TYPES } from './store/cart/cart.types';
 import { selectCurrentUser } from './store/user/user.selectors';
 import { selectCartItems, selectIsCartDropdownOpen } from './store/cart/cart.selectors';
 
-import Home from "./routes/home/home.component";
-import Navigation from './routes/navigation/navigation.component';
-import Authentication from './routes/authentication/authentication';
-import Shop from './routes/shop/shop.component';
-import Checkout from './routes/checkout/checkout.component';
-import Favorites from './routes/favorites/favorites.component';
+// import Home from "./routes/home/home.component";
+// import Navigation from './routes/navigation/navigation.component';
+// import Authentication from './routes/authentication/authentication';
+// import Shop from './routes/shop/shop.component';
+// import Checkout from './routes/checkout/checkout.component';
+// import Favorites from './routes/favorites/favorites.component';
+import Spinner from './components/spinner/spinner.component';
+
+const Home = lazy(() => import('./routes/home/home.component'));
+const Navigation = lazy(() => import('./routes/navigation/navigation.component'));
+const Authentication = lazy(() => import('./routes/authentication/authentication'));
+const Shop = lazy(() => import('./routes/shop/shop.component'));
+const Checkout = lazy(() => import('./routes/checkout/checkout.component'));
+const Favorites = lazy(() => import('./routes/favorites/favorites.component'));
 
 
 const App = () => {
@@ -87,17 +95,17 @@ const App = () => {
 
   return (
     <Fragment>
-
-    <Routes>
-      <Route path='/' element={<Navigation />}>
-        <Route index element={<Home />} />
-        <Route path='shop/*' element={<Shop />} />
-        <Route path='auth' element={<Authentication />} />
-        <Route path='checkout' element={<Checkout />} />
-        <Route path='favorites' element={<Favorites />} />
-      </Route>
-    </Routes>
-    
+      <Suspense fallback={<Spinner />}>
+        <Routes>
+          <Route path='/' element={<Navigation />}>
+            <Route index element={<Home />} />
+            <Route path='shop/*' element={<Shop />} />
+            <Route path='auth' element={<Authentication />} />
+            <Route path='checkout' element={<Checkout />} />
+            <Route path='favorites' element={<Favorites />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Fragment>
   )
 

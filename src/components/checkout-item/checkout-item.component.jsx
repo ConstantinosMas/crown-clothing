@@ -1,8 +1,10 @@
+import { memo } from 'react';
+
 import { useDispatch } from 'react-redux';
 import { modifyCart } from '../../store/cart/cart.action';
 import './checkout-item.styles.scss';
 
-const CheckoutItem = ({product}) => {
+const CheckoutItem = memo(({product}) => {
 
     const {name, imageUrl, quantity, price} = product;
     const dispatch = useDispatch();
@@ -35,6 +37,6 @@ const CheckoutItem = ({product}) => {
         </div>
     )
 
-}
+}) 
 
 export default CheckoutItem;
